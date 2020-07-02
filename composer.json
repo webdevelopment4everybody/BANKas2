@@ -1,0 +1,19 @@
+{
+    "name": "login/objektinis",
+    "description": "Objektinio prisijungimo pavyzdys",
+    "autoload":{
+        "psr-4":{
+            "Main\\": "app",
+            "App\\DB\\":"app/db"
+        }
+    },
+    "authors": [
+        {
+            "name": "webdevelopment4everybody",
+            "email": "56918351+webdevelopment4everybody@users.noreply.github.com"
+        }
+    ],
+    "require": {
+        "ramsey/uuid": "^4.0"
+    }
+}
