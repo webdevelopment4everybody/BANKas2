@@ -24,4 +24,12 @@ class Login{
     public static function auth(){
         return(isset($_SESSION['login']) && $_SESSION['login'] == 1);
     }
+    public static function logout (){
+
+        unset( $_SESSION['login']);
+
+        header('Location: /Php/Bankas2/public/login');
+        die();
+
+    }
 }

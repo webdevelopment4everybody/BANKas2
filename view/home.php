@@ -14,6 +14,7 @@ require __DIR__ . '/menu.php';
 <th>Asmens kodas</th>
 <th>Sąskaitos numeris</th>
 <th>Likutis</th>
+<th>Keisti valiutą</th>
 <th>Pridėti pinigų</th>
 <th>Nuskaičiuoti pinigų</th>
 <th>Ištrinti vartotoją</th>
@@ -31,6 +32,7 @@ foreach($data as $asmensKodas => $data){
     echo '<td>'.$data['id'].'</td>';
     echo '<td>'.$data['saskNr'].'</td>';
     echo '<td>'.$data['amount'].'</td>';
+    echo'<td><a href="./../public/change/'.$data['id'].'">Keisti valiutą</a></td>';
     echo '<td><a href="./../public/add/'.$data['id'].'">Pridėti pinigų</a></td>';
     echo '<td><a href="./../public/minus/'.$data['id'].'">Nuskaičiuoti pinigų</a></td>';
     echo '<td><a href="./../public/remove/'.$data['id'].'">Ištrinti klientą</a></td>';

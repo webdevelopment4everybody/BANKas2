@@ -23,7 +23,7 @@ class App{
             $param = str_replace(self::DIR, '', $_SERVER['REQUEST_URI']);
             self::$params = explode('/', $param);
 
-            if(self::$params[0]=='add')
+            if(self::$params[0]=='add' && isset($_SESSION['login']))
             {
                 if(!empty($_POST)){
 
@@ -32,14 +32,15 @@ class App{
                     header('Location: /Php/Bankas2/public/add/'.self::$params[1]);
                     die();
 
-                }else{
+                }
+                else{
                     App::$user = self::$params[1];
 
                     require('./../view/prideti.php');
                 }
             }
 
-            if(self::$params[0] == 'minus'){
+            if(self::$params[0] == 'minus' && isset($_SESSION['login'])){
 
                 if(!empty($_POST)){
 
@@ -61,19 +62,36 @@ class App{
                 header('Location: /Php/Bankas2/public/home');
                 die();
             }
+            if(self::$params[0] == 'change' && isset($_SESSION['login'])){
 
+                if(!empty($_POST)){
+
+                    Change::convert(self::$params[1]);
+
+                    header('Location: /Php/Bankas2/public/change/'.self::$params[1]);
+                    die();
+
+                }else{
+                    App::$user = self::$params[1];
+
+                    require('./../view/keisti.php');
+                }
+
+            }
 
             if(count(self::$params) == 2){
-                    if(self::$params[1] == 'addUser'){
+                    if(self::$params[1] == 'addUser'&& isset($_SESSION['login'])){
                         Saskaita::add();
                         self::redirect('home');
                     }
                     if (file_exists(self::VIEW_DIR.self::$params[0].'/'.self::$params[1].'.php')){
                         require(self::VIEW_DIR.self::$params[0].'/'.self::$params[1].'.php');
                     }
-            }
+                    if(self::$params[0] == 'login' && self::$params[1] == 'logout'){
+                        Login::logout();
+                    }
 
-            elseif(count(self::$params) == 1){
+                }elseif(count(self::$params) == 1){
 
                 if(self::$params[0] == 'doLogin'){
                     $login = new Login;

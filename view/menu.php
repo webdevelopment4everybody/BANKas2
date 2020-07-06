@@ -7,6 +7,7 @@
     <title>Document</title>
 </head>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@1,500&display=swap" rel="stylesheet">
+<script src="https://kit.fontawesome.com/2b932cd76f.js" crossorigin="anonymous"></script>
 <style>
 body {
   margin: 0;
@@ -45,6 +46,7 @@ a{
 
 .menu a {
   float: left;
+  width:30%;
   color: #f1f1f1;
   text-align: center;
   padding: 20px 16px;
@@ -113,8 +115,9 @@ p{
  <nav class="menu">
     <a href = "<?=Main\App::URL. 'home'?>">Pradinis</a>
         <a href = "<?=Main\App::URL. 'users/create'?>">Pridėti naują vartotoją</a>
+        <a class="navButton logout" href="./../public/login/logout">Atsijungti <i class="fas fa-sign-out-alt"></i> </a>
  </nav>
-<p class=""><?php  
+<p class="$klaidos_spalva"><?php  
         
         if(isset($_SESSION['note'])) {
             echo $_SESSION['note']['text'];

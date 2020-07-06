@@ -5,81 +5,82 @@ use App\DB\JsonDb;
 
 
 class Saskaita {
-
+    
     public static function add(){
         $saskNr = 'LT';
             for($i = 0; $i<18; $i++){
                 $randNr = rand(0,9);
                 $saskNr .= $randNr;
             }
-        if(!empty($_POST) && self::validateId()){
+        if(!empty($_POST)){
             if(strlen( $_POST['user']) <=3){
-                $error=true;
+                // $error=true;
                 $_SESSION['note'] = [
                     "message" => "error",
-                    "text"=>'Tokio vardo negali būti.',
+                    "text"=>'Toks vardas negali buti uzregistruotas.',
                 ];
             }
             elseif(strlen( $_POST['lastname']) <=3){
-                $error=true;
+                // $error=true;
                 $_SESSION['note'] = [
                     "message" => "error",
-                    "text"=>'Tokios pavardes negali būti.',
+                    "text"=>'Tokia pavarde negali buti uzregistruota.',
                 ];
-
             }
-            elseif(strlen($_POST['id']) != 11 || !is_numeric($_POST['id']) ){
-                $error=true;
+            elseif(strlen($_POST['id']) != 11 || !is_numeric($_POST['id'])){
+                // $error=true;
                 $_SESSION['note'] = [
                     "message" => "error",
-                    "text"=>'Blogas asmens kodo formatas',
+                    "text"=>'Toks asmens kodas negali buti sukurtas',
                     ];
-            }
-            
-            if(strlen( $_POST['user']) >=3 && strlen( $_POST['lastname']) >=3 && strlen($_POST['id']) == 11){
+                } 
+                if(!self::validateId()){
+                    $_SESSION['note'] = [
+                        "message" => "message",
+                        "text"=>'Saskaita NEsukurta.',
+                    ];
+                  }   else{
+            if(strlen( $_POST['user']) >=3 && strlen( $_POST['lastname']) >=3 && strlen($_POST['id']) == 11 ){
             $newObject = [
                 'name'=> $_POST['user'],
                 'lastname' => $_POST['lastname'],
                 'saskNr' => $saskNr,
                 'id' => $_POST['id'],
                 'amount' => 0,
-                'usd' => 0
+                'usd' => 0,
+                'eur'=>0
             ];
-
             $duomenys = new JsonDb;
             $duomenys->create($newObject);
-             $error=true;
+             // $error=true;
              $_SESSION['note'] = [
                 "message" => "message",
                 "text"=>'Saskaita sukurta.',
             ];
         }
-        
+                        }
     }
 }
-
+    // var_dump(validateId());
     public static function validateId(){
         $duomenys = new JsonDb;
         $data = $duomenys->showAll();
-
+        $uniqueId = true;
         foreach($data as $value){
-
             if($value['id'] == $_POST['id']){
-            
                 $uniqueId = false;
-                $error=true;
+                return false;
                 $_SESSION['note'] = [
                     "message" => "error",
-                    "text" => "Toks asmuo ".$_POST['id']." jau yra!"
+                    "text" => "Saskaita: ".$_POST['id']." jau egzistuoja!"
                 ];
-
             }
         }
-
         return true;
     }
-    public static function remove($id){
-
+    
+public static function remove($id){
+    
         $duomenys = new JsonDb;
         $user = $duomenys->show($id);
 
@@ -149,6 +150,16 @@ class Saskaita {
             header('Location: /Php/Bankas2/public/home');
         die();
     }
+
 }
+// public static $errorColor = '';
+
+// if(isset($_SESSION['note'])){
+//     if($_SESSION['note']['message'] == 'message'){
+//         $errorColor = 'green';
+//     }else{
+//         $errorColor = 'red';
+//     }
+// }
 }
 }
