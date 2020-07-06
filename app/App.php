@@ -2,51 +2,83 @@
 namespace Main;
 
 use Main\Login;
+use Main\Saskaita;
+use App\DB\JsonDb;
+use Main\App;
 
 use Main\User;
 use App\DB\JsonDb as DB;
 use App\view\Menu;
 
 class App{
+    public static $user = '';
     const DIR = '/Php/Bankas2/public/';
     const VIEW_DIR = './../view/';
     const URL='http://localhost/Php/Bankas2/public/';
     private static $params = [];
 
-    private static $guarded = ['menu', 'slaptas-2'];
+    private static $guarded = ['home', 'slaptas-2'];
     public static function start(){
             session_start();
             $param = str_replace(self::DIR, '', $_SERVER['REQUEST_URI']);
             self::$params = explode('/', $param);
 
+            if(self::$params[0]=='add')
+            {
+                if(!empty($_POST)){
+
+                    Saskaita::sum();
+
+                    header('Location: /Php/Bankas2/public/add/'.self::$params[1]);
+                    die();
+
+                }else{
+                    App::$user = self::$params[1];
+
+                    require('./../view/prideti.php');
+                }
+            }
+
+            if(self::$params[0] == 'minus'){
+
+                if(!empty($_POST)){
+
+                    Saskaita::minus();
+
+                    header('Location: /Php/Bankas2/public/minus/'.self::$params[1]);
+                    die();
+
+                }else{
+                    App::$user = self::$params[1];
+
+                    require('./../view/minus.php');
+                }
+
+            }
+            if(self::$params[0]=='remove'&& isset($_SESSION['login'])){
+                Saskaita::remove(self::$params[1]);
+
+                header('Location: /Php/Bankas2/public/home');
+                die();
+            }
+
+
             if(count(self::$params) == 2){
-                if(self::$params[0] == 'users'){
-
                     if(self::$params[1] == 'addUser'){
-                        $newUser = User::createNew();
-                        $db =new DB;
-                        $db->create($newUser);
+                        Saskaita::add();
                         self::redirect('home');
-                    }elseif(self::$params[1] == 'delete'){
-                        $User = User::deleteUser();
-                        $db=json_decode(file_get_contents('./../db/data.json'),1);
-                        $db->delete($User);
-                        file_put_contents('./../db/data.json', json_encode([]));
-                        self::redirect('home');
-
                     }
                     if (file_exists(self::VIEW_DIR.self::$params[0].'/'.self::$params[1].'.php')){
                         require(self::VIEW_DIR.self::$params[0].'/'.self::$params[1].'.php');
                     }
-                }
+            }
 
-            }elseif(count(self::$params) == 1){
-
+            elseif(count(self::$params) == 1){
 
                 if(self::$params[0] == 'doLogin'){
                     $login = new Login;
                     if($login->result()){
-                        self::redirect('menu');
+                        self::redirect('home');
                     } else {
                         self::redirect('login');
                     }

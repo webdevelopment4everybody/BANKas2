@@ -9,7 +9,7 @@ interface DataBase
  
     function delete(string $userId) : void;
  
-    function show(string $userId) : array;
+    function show(string $userId):array;
     
     function showAll() : array;
 }

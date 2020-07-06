@@ -7,7 +7,7 @@ Vardas:<br>
 Pavardė: <br>
 <input type="text" name="lastname" placeholder="Pavarde"><br>
 Asmens kodas:<br>
-<input type="text" name="pc" placeholder="Asmens kodas"><br><br>
+<input type="text" name="id" placeholder="Asmens kodas"><br><br>
 <input type="submit" value="Add">
 </div>
 </form>

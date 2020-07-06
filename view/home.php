@@ -1,6 +1,8 @@
 
 <?php
+// use app\db\JsonDb;
 use Main\App;
+
 require __DIR__ . '/menu.php';
 
 ?>
@@ -18,18 +20,21 @@ require __DIR__ . '/menu.php';
 </tr>
 
 <?php
-$data1=json_decode(file_get_contents('./../db/data.json'),1);
-foreach($data1 as $asmensKodas => $data){
+use App\DB\JsonDb;
+$duomenys = new JsonDb;
+$data = $duomenys->showAll();
+
+foreach($data as $asmensKodas => $data){
     ?><tr><?php
     echo '<td>'.$data['name'].'</td>';
     echo '<td>'.$data['lastname'].'</td>';
-    echo '<td>'.$data['asmensKodas'].'</td>';
+    echo '<td>'.$data['id'].'</td>';
     echo '<td>'.$data['saskNr'].'</td>';
-    echo '<td>'.'0'.'</td>';
-    echo '<td><a href="'.Main\App::URL.'?a=add&user='.$asmensKodas.'">Pridėti pinigų</a></td>';
-    echo '<td><a href="'.Main\App::URL.'?a=remove&user='.$asmensKodas.'">Nuskaičiuoti pinigų</a></td>';
-    echo '<td><a href="'.Main\App::URL.'users/delete='.$asmensKodas.'">Ištrinti klientą</a></td>';
-
+    echo '<td>'.$data['amount'].'</td>';
+    echo '<td><a href="./../public/add/'.$data['id'].'">Pridėti pinigų</a></td>';
+    echo '<td><a href="./../public/minus/'.$data['id'].'">Nuskaičiuoti pinigų</a></td>';
+    echo '<td><a href="./../public/remove/'.$data['id'].'">Ištrinti klientą</a></td>';
+    
     ?></tr>
     <?php
 } 
