@@ -1,4 +1,6 @@
-
+<?php
+require __DIR__ .'./../menu.php';
+?>
 <h1>BANKAS<br>Naujas klientas.</h1>
 <div>
 <form action="<?= Main\App::URL ?>users/addUser"method="POST">

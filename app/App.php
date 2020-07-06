@@ -27,7 +27,7 @@ class App{
             {
                 if(!empty($_POST)){
 
-                    Saskaita::sum();
+                    Saskaita::suma();
 
                     header('Location: /Php/Bankas2/public/add/'.self::$params[1]);
                     die();

@@ -3,6 +3,7 @@
 use App\DB\JsonDb;
 use Main\App;
 use Main\User;
+require __DIR__ .'/menu.php';
 
 
 $db = new JsonDb;
@@ -17,18 +18,13 @@ if(isset($_SESSION['note'])){
         $errorColor = 'red';
     }
 }?>
-<!-- 
-<select id='select1' name=\"currency\">
-        <option name=\"eur-input\" value=\"eur\">EUR</option>
-        <option name=\"usd-input\" value=\"usd\">USD</option>
-</select> -->
 <?php
-echo '<td>'.$user['name'].'</td>'.' '.' ';
-echo '<td>'.$user['lastname'].'</td>'.' '.' ';
-echo '<td>'.$user['saskNr'].'</td>'.' '.' '. '<br>';
-echo '<td>'.$user['amount'].'</td>';
-echo '<td>'.$user['eur'].'</td>';
-echo  '<td>'.$user['usd'].'</td>';
+// echo '<td>'.$user['name'].'</td>'.' '.' ';
+// echo '<td>'.$user['lastname'].'</td>'.' '.' ';
+// echo '<td>'.$user['saskNr'].'</td>'.' '.' '. '<br>';
+// echo '<td>'.$user['amount'].'</td>';
+// echo '<td>'.$user['eur'].'</td>';
+// echo  '<td>'.$user['usd'].'</td>';
 // echo '<a id="change" style="color:black" href="./../change/'.App::$user.'">Keisti valiuta</a>';
     ?>
     </tr>

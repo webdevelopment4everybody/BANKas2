@@ -14,30 +14,30 @@ class Saskaita {
             }
         if(!empty($_POST)){
             if(strlen( $_POST['user']) <=3){
-                // $error=true;
+                $error=true;
                 $_SESSION['note'] = [
                     "message" => "error",
                     "text"=>'Toks vardas negali buti uzregistruotas.',
                 ];
             }
             elseif(strlen( $_POST['lastname']) <=3){
-                // $error=true;
+                $error=true;
                 $_SESSION['note'] = [
                     "message" => "error",
-                    "text"=>'Tokia pavarde negali buti uzregistruota.',
+                    "text"=>'Neteisinga pavardė.',
                 ];
             }
             elseif(strlen($_POST['id']) != 11 || !is_numeric($_POST['id'])){
-                // $error=true;
+                $error=true;
                 $_SESSION['note'] = [
                     "message" => "error",
-                    "text"=>'Toks asmens kodas negali buti sukurtas',
+                    "text"=>'Neteisingas asmens kodo formatas.',
                     ];
                 } 
-                if(!self::validateId()){
+                if(!self::checkId()){
                     $_SESSION['note'] = [
                         "message" => "message",
-                        "text"=>'Saskaita NEsukurta.',
+                        "text"=>'Toks asmuo jau yra įrašytas.',
                     ];
                   }   else{
             if(strlen( $_POST['user']) >=3 && strlen( $_POST['lastname']) >=3 && strlen($_POST['id']) == 11 ){
@@ -52,17 +52,16 @@ class Saskaita {
             ];
             $duomenys = new JsonDb;
             $duomenys->create($newObject);
-             // $error=true;
+             $error=true;
              $_SESSION['note'] = [
                 "message" => "message",
-                "text"=>'Saskaita sukurta.',
+                "text"=>'Asmuo įrašytas.',
             ];
         }
                         }
     }
 }
-    // var_dump(validateId());
-    public static function validateId(){
+    public static function checkId(){
         $duomenys = new JsonDb;
         $data = $duomenys->showAll();
         $uniqueId = true;
@@ -72,7 +71,7 @@ class Saskaita {
                 return false;
                 $_SESSION['note'] = [
                     "message" => "error",
-                    "text" => "Saskaita: ".$_POST['id']." jau egzistuoja!"
+                    "text" => "Saskaita: ".$_POST['id']." jau yra."
                 ];
             }
         }
@@ -88,21 +87,21 @@ public static function remove($id){
             $error=true;
             $_SESSION['note'] = [
                 "message" => "error",
-                "text" => 'Saskaitos negalima ištrinti, nes ji nėra tuščia!'
+                "text" => 'Sąskaitos negalima ištrinti, nes ji nėra tuščia.'
             ];
 
         }else{
             $error=true;
             $_SESSION['note'] = [
                 "message" => "message",
-                "text" => "Saskaita istrinta!"
+                "text" => "Sąskaita ištrinta."
             ];
 
             $duomenys->delete($id);
         }
        
     }
-    public static function sum(){
+    public static function suma(){
 
         if(!empty($_POST)){
             $duomenys = new JsonDb;
@@ -135,14 +134,13 @@ public static function remove($id){
                 $user['amount'] -= $_POST['amount'];
         
                 $duomenys->update($_POST['id'], $user);
-        
-        $_SESSION['note'] = [
+            $_SESSION['note'] = [
             "message" => "message",
             "text"=>'Iš vartotojo nuimta '.$_POST['amount']. ' euras(-ų).']
             ;
-        header('Location: /Php/Bankas2/public/home');
-        die();
-    }else{
+            header('Location: /Php/Bankas2/public/home');
+            die();
+        }else{
         $_SESSION['note'] = [
             "message" => "error",
             "text"=>'Vartotojas  neturi pakankamai pinigų, todėl pinigai nenuskaičiuoti.'
@@ -151,15 +149,7 @@ public static function remove($id){
         die();
     }
 
-}
-// public static $errorColor = '';
+    }
+    }
 
-// if(isset($_SESSION['note'])){
-//     if($_SESSION['note']['message'] == 'message'){
-//         $errorColor = 'green';
-//     }else{
-//         $errorColor = 'red';
-//     }
-// }
-}
 }

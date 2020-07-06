@@ -46,7 +46,7 @@ a{
 
 .menu a {
   float: left;
-  width:30%;
+  width:29.5%;
   color: #f1f1f1;
   text-align: center;
   padding: 20px 16px;
