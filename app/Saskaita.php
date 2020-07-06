@@ -14,14 +14,14 @@ class Saskaita {
             }
         if(!empty($_POST) && self::validateId()){
             if(strlen( $_POST['user']) <=3){
-                // $error=true;
+                $error=true;
                 $_SESSION['note'] = [
                     "message" => "error",
                     "text"=>'Tokio vardo negali būti.',
                 ];
             }
             elseif(strlen( $_POST['lastname']) <=3){
-                // $error=true;
+                $error=true;
                 $_SESSION['note'] = [
                     "message" => "error",
                     "text"=>'Tokios pavardes negali būti.',
@@ -29,12 +29,12 @@ class Saskaita {
 
             }
             elseif(strlen($_POST['id']) != 11 || !is_numeric($_POST['id']) ){
-                // $error=true;
+                $error=true;
                 $_SESSION['note'] = [
                     "message" => "error",
                     "text"=>'Blogas asmens kodo formatas',
                     ];
-                }
+            }
             
             if(strlen( $_POST['user']) >=3 && strlen( $_POST['lastname']) >=3 && strlen($_POST['id']) == 11){
             $newObject = [
@@ -48,7 +48,7 @@ class Saskaita {
 
             $duomenys = new JsonDb;
             $duomenys->create($newObject);
-             // $error=true;
+             $error=true;
              $_SESSION['note'] = [
                 "message" => "message",
                 "text"=>'Saskaita sukurta.',
@@ -67,10 +67,10 @@ class Saskaita {
             if($value['id'] == $_POST['id']){
             
                 $uniqueId = false;
-
+                $error=true;
                 $_SESSION['note'] = [
                     "message" => "error",
-                    "text" => "Saskaita: ".$_POST['id']." jau egzistuoja!"
+                    "text" => "Toks asmuo ".$_POST['id']." jau yra!"
                 ];
 
             }
@@ -84,17 +84,17 @@ class Saskaita {
         $user = $duomenys->show($id);
 
         if($user['amount'] > 0 ){
-
+            $error=true;
             $_SESSION['note'] = [
                 "message" => "error",
-                "text" => 'Saskaita nera tuscia!'
+                "text" => 'Saskaitos negalima ištrinti, nes ji nėra tuščia!'
             ];
 
         }else{
-
+            $error=true;
             $_SESSION['note'] = [
                 "message" => "message",
-                "text" => "Saskaita: $id istrinta sekmingai!"
+                "text" => "Saskaita istrinta!"
             ];
 
             $duomenys->delete($id);
@@ -113,6 +113,12 @@ class Saskaita {
             
     
         }
+        if($user['amount'] > 0){
+            $_SESSION['note'] = [
+                "message" => "message",
+                "text"=>'Vartotojui pridėta '.$_POST['amount'] .' eurai(-ų)!',
+                ];
+        }
         header('Location: /Php/Bankas2/public/home');
         die();
     }
@@ -123,12 +129,26 @@ class Saskaita {
             $duomenys = new JsonDb;
 
             $user = $duomenys->show($_POST['id'] );
-            
+            if($user['amount'] >= ($_POST['amount'] ?? 0)){
+
                 $user['amount'] -= $_POST['amount'];
         
                 $duomenys->update($_POST['id'], $user);
-        }
+        
+        $_SESSION['note'] = [
+            "message" => "message",
+            "text"=>'Iš vartotojo nuimta '.$_POST['amount']. ' euras(-ų).']
+            ;
         header('Location: /Php/Bankas2/public/home');
         die();
+    }else{
+        $_SESSION['note'] = [
+            "message" => "error",
+            "text"=>'Vartotojas  neturi pakankamai pinigų, todėl pinigai nenuskaičiuoti.'
+            ];
+            header('Location: /Php/Bankas2/public/home');
+        die();
     }
+}
+}
 }

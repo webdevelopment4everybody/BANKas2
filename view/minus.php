@@ -18,11 +18,9 @@ if(isset($_SESSION['note'])){
         $errorColor = 'red';
     }
 }
-    echo '<td>'.$user['name'].'</td>';
-    echo '<td>'.$user['lastname'].'</td>';
-    echo '<td>'.$user['id'].'</td>';
-    echo '<td>'.$user['saskNr'].'</td>';
-    echo '<td>'.$user['amount'].'</td>';
+    echo '<td>'.$user['name'].'</td>'.' '.' ';
+    echo '<td>'.$user['lastname'].'</td>'.' '.' ';
+    echo '<td>'.$user['saskNr'].'</td>'.' '.' ' ;
     ?>
     </tr>
 <h1>BANKAS.Nuimti lėšas.</h1>

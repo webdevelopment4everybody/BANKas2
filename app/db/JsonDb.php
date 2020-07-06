@@ -39,18 +39,12 @@ class JsonDb implements DataBase
                     array_splice($data, $key, 1);
                 }
             }
-
             file_put_contents('./../db/data.json', json_encode($data));
-
     }
  
     public function show(string $userId):array{
-
-        
         $data = json_decode(file_get_contents('./../db/data.json'),1);
-
         foreach($data as $key => $user){
-
             if($userId == $user['id']){
 
                 return  $data[$key];
@@ -88,7 +82,6 @@ class JsonDb implements DataBase
             }while($swapped);
             return $array;
         }
-
         return bubleSort($userData);
     }
     
