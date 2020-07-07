@@ -25,9 +25,10 @@ if(isset($_SESSION['note'])){
 // echo '<td>'.$user['amount'].'</td>';
 // echo '<td>'.$user['eur'].'</td>';
 // echo  '<td>'.$user['usd'].'</td>';
-// echo '<a id="change" style="color:black" href="./../change/'.App::$user.'">Keisti valiuta</a>';
+// echo '<a id="change" style="color:black" href="./../change/'.App::$user.'">Pakeisti valiutą</a>';
     ?>
     </tr>
+    <!-- <a id="change" style="color:black" href="./../change/'.App::$user.'">Pakeisti valiutą</a> -->
 <h1>BANKAS.Pridėti lėšas.</h1>
 <div>
 <form action='./../add/<?=App::$user?>'method="POST">

@@ -28,18 +28,18 @@ $select2 = "<select id=\"select2\" name=\"currency2\">
 
        
 
-echo '<td>'.$user['name'].'</td>'.' '.' ';
-echo '<td>'.$user['lastname'].'</td>'.' '.' ';
-echo '<td>'.$user['saskNr'].'</td>'.' '.' '. '<br>';
-echo '<td>'.$user['eur'].'</td>';
-echo  '<td>'.$user['usd'].'</td>';
-echo '<a id="change" style="color:black" href="./../change/'.App::$user.'">Keisti valiuta</a>';
+// echo '<td>'.$user['name'].'</td>'.' '.' ';
+// echo '<td>'.$user['lastname'].'</td>'.' '.' ';
+// echo '<td>'.$user['saskNr'].'</td>'.' '.' '. '<br>';
+// echo '<td>'.$user['eur'].'</td>';
+// echo  '<td>'.$user['usd'].'</td>';
+// echo '<a id="change" style="color:black" href="./../change/'.App::$user.'">Keisti valiuta</a>';
 ?>
     </tr>
 <h1>BANKAS.Keisti valiutą.</h1>
 <div>
 <form action='./../change/<?=App::$user?>'method="POST">
-Iš <?="$select"?>  <input id="form-input" type="number" step="0.01" name="sum" min="0" required> į   <?="$select2"?>
+Iš <?="$select"?>  <input id="form-input" type="number" step="0.01" name="sum" min="0" required> į   <?="$select2"?><br>
 <input type="text" name="" value=""><br><br>
 <input type="hidden" name="id" value="<?=$user['id']?>">
 <button id="submit" type="submit">Keisti</button>

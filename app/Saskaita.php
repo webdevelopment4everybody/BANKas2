@@ -17,7 +17,7 @@ class Saskaita {
                 $error=true;
                 $_SESSION['note'] = [
                     "message" => "error",
-                    "text"=>'Toks vardas negali buti uzregistruotas.',
+                    "text"=>'Netesingas vardas.',
                 ];
             }
             elseif(strlen( $_POST['lastname']) <=3){

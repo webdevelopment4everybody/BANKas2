@@ -66,8 +66,7 @@ class App{
 
                 if(!empty($_POST)){
 
-                    Change::convert(self::$params[1]);
-
+                    
                     header('Location: /Php/Bankas2/public/change/'.self::$params[1]);
                     die();
 

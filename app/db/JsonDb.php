@@ -1,28 +1,22 @@
 <?php 
-
 namespace App\DB;
-
 use App\DB\DataBase;
 class JsonDb implements DataBase
 {
-
     private $data;
-    public function __construct(){
-        if(!file_exists('./../db/data.json')){
-        file_put_contents('./../db/data.json', json_encode([]));
-    }
-    $this->data =json_decode(file_get_contents('./../db/data.json'),1);
-    }
+        public function __construct(){
+            if(!file_exists('./../db/data.json')){
+            file_put_contents('./../db/data.json', json_encode([]));
+        }
+        $this->data =json_decode(file_get_contents('./../db/data.json'),1);
+        }
     public function create(array $userData) : void{
-            $data = json_decode(file_get_contents('./../db/data.json'),1);
+            $data = self::save();
             $data[] = $userData;
             file_put_contents('./../db/data.json', json_encode($data));
-
     }
- 
     public function update(string $userId, array $userData) : void{
-        $data = json_decode(file_get_contents('./../db/data.json'),1);
-
+        $data = self::save();
         foreach($data as $key => $user){
             if($userId == $data[$key]['id']){
                 $data[$key] = $userData;
@@ -30,10 +24,8 @@ class JsonDb implements DataBase
         }
         file_put_contents('./../db/data.json', json_encode($data));
     }
- 
     public function delete(string $userId) : void{
-        $data = json_decode(file_get_contents('./../db/data.json'),1);
-
+        $data = self::save();
             foreach($data as $key => $user){
                 if($userId == $data[$key]['id']){
                     array_splice($data, $key, 1);
@@ -41,29 +33,26 @@ class JsonDb implements DataBase
             }
             file_put_contents('./../db/data.json', json_encode($data));
     }
- 
     public function show(string $userId):array{
-        $data = json_decode(file_get_contents('./../db/data.json'),1);
+        $data = self::save();
         foreach($data as $key => $user){
             if($userId == $user['id']){
-
                 return  $data[$key];
             }
         }
-
     }
-    
     public function showAll() : array{
-        $data = json_decode(file_get_contents('./../db/data.json'),1);
+        $data = self::save();
         $sorted = $this->sort($data);
         return $sorted;      
 }
+    // private function save(){
+    //     file_put_contents('./../db/data.json', json_encode($this->data));
+    // }
     private function save(){
-        file_put_contents('./../db/data.json', json_encode($this->data));
+        return json_decode(file_get_contents('./../db/data.json'),1);
     }
-
     private function sort(array $userData) {
-
         function bubleSort($array){
             $swapped;
             do{
@@ -71,7 +60,6 @@ class JsonDb implements DataBase
                 for($i = 0; $i < count($array) - 1; $i++){
                     $firstElement = strnatcmp($array[$i]['lastname'], $array[$i+1]['lastname']);
                     $secondElement = strnatcmp($array[$i+1]['lastname'], $array[$i]['lastname']);
-
                     if($firstElement > $secondElement){
                         $temp = $array[$i];
                         $array[$i] = $array[$i + 1];
@@ -84,5 +72,4 @@ class JsonDb implements DataBase
         }
         return bubleSort($userData);
     }
-    
 }
