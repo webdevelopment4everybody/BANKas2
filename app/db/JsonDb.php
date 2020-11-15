@@ -1,54 +1,83 @@
 <?php 
 namespace App\DB;
+use PDO;
+use App\DB\Migration;
 use App\DB\DataBase;
-class JsonDb implements DataBase
-{
-    private $data;
+class JsonDb implements DataBase{
+    public static $pdo;
+
         public function __construct(){
-            if(!file_exists('./../db/data.json')){
-            file_put_contents('./../db/data.json', json_encode([]));
+            $this->db();
         }
-        $this->data =json_decode(file_get_contents('./../db/data.json'),1);
+
+    public static function db() {
+        $host = 'localhost';
+        $db   = 'bankas2';
+        $user = 'root';
+        $pass = '';
+        $charset = 'utf8mb4';
+        
+        $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
+        $options = [
+            PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+            PDO::ATTR_EMULATE_PREPARES   => false,
+        ];
+        try {
+        self::$pdo = new PDO($dsn, $user, $pass, $options);
+        } catch (\PDOException $e) {
+             throw new \PDOException($e->getMessage(), (int)$e->getCode());
         }
+        $sql = "CREATE TABLE IF NOT EXISTS acc (
+            firstname VARCHAR(30) NOT NULL,
+            lastname VARCHAR(30) NOT NULL,
+            saskNr CHAR(20),
+            id BIGINT(50) UNSIGNED PRIMARY KEY,
+            amount DECIMAL(10,2) DEFAULT 0
+             )";
+        
+        try {
+        self::$pdo->exec($sql);
+        // echo "Table ACC created successfully";
+        }
+        catch(PDOException $e)
+        {
+        echo $sql . "<br>" . $e->getMessage();
+        }
+    }
     public function create(array $userData) : void{
-            $data = self::save();
-            $data[] = $userData;
-            file_put_contents('./../db/data.json', json_encode($data));
+        $sql = "INSERT INTO acc (firstname, lastname, saskNr,id, amount)
+        VALUES (:firstname, :lastname,:saskNr, :id,:amount)";
+        $stmt = self::$pdo->prepare($sql);
+        $stmt->execute($userData); 
     }
     public function update(string $userId, array $userData) : void{
-        $data = self::save();
-        foreach($data as $key => $user){
-            if($userId == $data[$key]['id']){
-                $data[$key] = $userData;
-            }
-        }
-        file_put_contents('./../db/data.json', json_encode($data));
+       
+        $sql = "UPDATE acc SET amount = ? WHERE id = $userId";
+        $stmt = self::$pdo->prepare($sql);
+        $stmt->execute([
+            $userData['amount']
+        ]);
     }
     public function delete(string $userId) : void{
-        $data = self::save();
-            foreach($data as $key => $user){
-                if($userId == $data[$key]['id']){
-                    array_splice($data, $key, 1);
-                }
-            }
-            file_put_contents('./../db/data.json', json_encode($data));
+        $sql = "DELETE FROM acc WHERE id = ?";
+            $stmt = self::$pdo->prepare($sql);
+            $stmt->execute([$userId]);
+
     }
     public function show(string $userId):array{
-        $data = self::save();
-        foreach($data as $key => $user){
-            if($userId == $user['id']){
-                return  $data[$key];
-            }
-        }
+        $sql = "SELECT * FROM acc WHERE id = ?";
+      $stmt = self::$pdo->prepare($sql);
+      $stmt->execute([$userId]);   
+      return (array) $stmt->fetch();
     }
-    public function showAll() : array{
-        $data = self::save();
-        $sorted = $this->sort($data);
-        return $sorted;      
+    public function showAll() : array{ 
+        $sql= "SELECT * FROM acc";
+        $stmt = self::$pdo->prepare($sql);
+        $stmt->execute();
+        return $this->sort((array)$stmt->fetchAll());
 }
-    // private function save(){
-    //     file_put_contents('./../db/data.json', json_encode($this->data));
-    // }
+
     private function save(){
         return json_decode(file_get_contents('./../db/data.json'),1);
     }

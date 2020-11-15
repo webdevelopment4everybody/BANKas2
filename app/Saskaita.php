@@ -5,6 +5,8 @@ use App\DB\JsonDb;
 
 
 class Saskaita {
+    public static  $pdo;
+    // public static $PDO;
     
     public static function add(){
         $saskNr = 'LT';
@@ -42,13 +44,11 @@ class Saskaita {
                   }   else{
             if(strlen( $_POST['user']) >=3 && strlen( $_POST['lastname']) >=3 && strlen($_POST['id']) == 11 ){
             $newObject = [
-                'name'=> $_POST['user'],
+                'firstname'=> $_POST['user'],
                 'lastname' => $_POST['lastname'],
                 'saskNr' => $saskNr,
                 'id' => $_POST['id'],
                 'amount' => 0,
-                'usd' => 0,
-                'eur'=>0
             ];
             $duomenys = new JsonDb;
             $duomenys->create($newObject);

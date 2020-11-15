@@ -5,13 +5,14 @@ use Main\Login;
 use Main\Saskaita;
 use App\DB\JsonDb;
 use Main\App;
-
+use PDO;
 use Main\User;
 use App\DB\JsonDb as DB;
 use App\view\Menu;
 
 class App{
     public static $user = '';
+    public static $pdo;
     const DIR = '/Php/Bankas2/public/';
     const VIEW_DIR = './../view/';
     const URL='http://localhost/Php/Bankas2/public/';

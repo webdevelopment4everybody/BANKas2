@@ -27,7 +27,7 @@ $data = $duomenys->showAll();
 
 foreach($data as $asmensKodas => $data){
     ?><tr><?php
-    echo '<td>'.$data['name'].'</td>';
+    echo '<td>'.$data['firstname'].'</td>';
     echo '<td>'.$data['lastname'].'</td>';
     echo '<td>'.$data['id'].'</td>';
     echo '<td>'.$data['saskNr'].'</td>';
